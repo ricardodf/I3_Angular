@@ -1,0 +1,83 @@
+<form #f="ngForm" (ngSubmit)="submit(f)">
+    <div class="media">
+        <a class="d-flex align-self-bottom" href="#">
+            <img class="mr-3"  src="https://picsum.photos/id/{{product.uid}}/100/100" alt="Generic placeholder image">
+        </a>
+        <div class="media-body">
+            <div class="form-group">
+                <label for="">uid (clave de producto)</label>
+                <input type="number" class="form-control" min="0" ngModel [(ngModel)]="product.uid" name="uid" 
+                [disabled]="router.includes('new') ? null : 'disabled'">
+            </div>
+            <div class="form-group">
+                <label for="">Nombre de producto</label>
+                <input type="text" class="form-control" ngModel [(ngModel)]="product.nombre" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="">Marca</label>
+                <select class="form-control" name="marca" ngModel [(ngModel)]="product.marca" name="marca" required>
+                    <option value="">Seleccionar una opción</option>
+                    <option *ngFor="let marca of marcas">{{marca}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="">Precio</label> 
+                <input type="number" class="form-control" ngModel [(ngModel)]="product.precio" name="precio" required>
+            </div>
+            <div class="form-group">
+                <label for="">Breve descripción</label>
+                <input type="text" class="form-control" ngModel [(ngModel)]="product.descripcion" name="descripcion" required >
+            </div>
+            <div class="form-group">
+                <label for="">Existencia</label>
+                <input type="number" class="form-control" ngModel [(ngModel)]="product.existencia" name="existencia" required >
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <label for="">Atributo</label>
+            <input #v1 type="text" class="form-control" [(ngModel)]="especificacion.atributo" name="atributo">
+        </div>
+        <div class="col-2">
+            <label for="">Valor</label>
+            <input #v2 type="text" class="form-control" [(ngModel)]="especificacion.valor" name="valor">
+        </div>
+        <div class="col-2">
+            <label for="">Unidad</label>
+            <input #v3  type="text" class="form-control" [(ngModel)]="especificacion.unidad" name="unidad">
+        </div>
+        <div>
+            <label for=""> </label><br>
+            <button type="button" class="btn btn-success" (click)="addEspecificacion()"
+            [disabled]="especificacion.atributo.length<1 || especificacion.valor.length<1 || especificacion.unidad.length<1 ? 'disable': null">Añadir</button>
+        </div>
+    </div>
+
+    <div>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Atributo</th>
+                    <th>Valor</th>
+                    <th>Unidad</th>
+                    <th>Borrar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of product.especificacion, let i = index">
+                    <td scope="row">{{item.atributo}}</td>
+                    <td>{{item.valor}}</td>
+                    <td>{{item.unidad}}</td>
+                    <td><button class="btn btn-primary" (click)="deleteEspecificacion(i)">Borrar<i class="fas fa-trash    "></i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <input class="btn btn-primary" type="submit" value="Guardar" [disabled]="!f.valid ? 'disabled': null">
+    <button class="btn btn-secondary ml-3" routerLink="/products">Cancelar</button> 
+</form>
+
+<p>{{product | json}}</p>
